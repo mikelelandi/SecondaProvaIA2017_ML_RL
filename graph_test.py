@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 """
     File name:			graph_test.py
-    Author:				Michele Landi / Raoul Landi
+    Author:			Michele Landi / Raoul Landi
     Modified by:		Michele landi / Raoul Landi
-    Matr Raoul Landi:	0258005
-    Matr Michele Landi:
+    Matr Raoul Landi:		0258005
+    Matr Michele Landi:		
     Date created:		09/01/2018
-    Date last modified:	09/01/2018
+    Date last modified:		09/01/2018
     Python Version:		3.6
     File Versione:		1.0.0
 
@@ -26,22 +26,46 @@ import random
 import time
 
 from graph.Graph_AdjacencyList import GraphAdjacencyList
-#import numpy as np
-#from dictTrees.dictionaryAVL import DictAVL
-#from dictTrees.dictBinaryTree import DictBinaryTree
-#import matplotlib.pyplot as plt
 
+
+# import numpy as np
+# from dictTrees.dictionaryAVL import DictAVL
+# from dictTrees.dictBinaryTree import DictBinaryTree
+# import matplotlib.pyplot as plt
 
 
 class Graph_Test():
 
-	def generateGraph(self):
+    def generateGraph():
+        oGraph = GraphAdjacencyList()
 
-		oGraph = GraphAdjacencyList()
+        Ntot = random.randrange(5, 10)
 
-		Ntot = random.randrange(10, 100)
+        nodes = []
+        for i in range(0, Ntot):
+            node = oGraph.addNode(i)
+            nodes.append(node)
 
-		nodes = []
-		for N in range( 0 , Ntot ):
-			nodes.apped(N)
-			oGraph.addNode(N)
+        Sample = random.randrange(1, len(nodes))
+        IdNodesA = random.sample(range(0, Ntot), Sample)
+
+        Sample = random.randrange(1, len(nodes))
+        IdNodesB = random.sample(range(0, Ntot), Sample)
+
+        for IdA in IdNodesA:
+            node_src = oGraph.getNode(IdA)
+            for IdB in IdNodesB:
+                node_dst = oGraph.getNode(IdB)
+                if node_src != node_dst and oGraph.isAdj(node_src.id, node_dst.id) == False and oGraph.isAdj(node_dst.id, node_src.id) == False:
+                    oGraph.insertEdge(node_src.id, node_dst.id,1)
+                    oGraph.insertEdge(node_dst.id, node_src.id,1)
+
+        return oGraph
+
+
+if __name__ == "__main__":
+
+    Gph = Graph_Test.generateGraph()
+
+    print ("--- stampa del grafo ---")
+    Gph.print()
