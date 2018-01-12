@@ -297,3 +297,40 @@ if __name__ == "__main__":
         graph.deleteNode(node.id)
         print("Node removed:", node.id)
         graph.print()
+
+
+    # add nodes
+    print ("--- add nodes ---")
+    nodes = []
+    for i in range(3):
+        node = graph.addNode(i)
+        print("Node inserted:", node)
+        nodes.append(node)
+
+    print('--- graph.print() ---')
+    graph.print()
+
+    # connect all nodes
+    print('--- connect all nodes ---')
+    for node_src in nodes:
+        for node_dst in nodes:
+            if node_src != node_dst:
+                print("---")
+                print("Adjacent nodes {},{}: {}"
+                      .format(node_src.id, node_dst.id,
+                              graph.isAdj(node_src.id, node_dst.id)))
+                graph.insertEdge(node_src.id, node_dst.id,
+                                 node_src.id + node_dst.id)
+                print("Edge inserted: from {} to {}".format(node_src.id,
+                                                            node_dst.id))
+                print("Adjacent nodes {},{}: {}"
+                      .format(node_src.id, node_dst.id,
+                              graph.isAdj(node_src.id, node_dst.id)))
+                graph.print()
+                print("---")
+
+
+    print ("!prova per matrice!")
+    for node in nodes:
+        A = graph.getAdj(node.id)
+        print (A)
