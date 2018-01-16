@@ -167,11 +167,17 @@ def FloydWarshall_ADJ(graph):
     # dist[i,j]=inf, if (i,j) not in E
     # dist[i,i]=0,
     # dist[i,j]=w(i,j), if (i,j) in E
+    # codice modificato e implentato inquanto il metodo non eseguiva il codice in caso di calcellazione di un nodo dal grafo
     dist = [[INFINITE] * nodes for i in range(nodes)]
     for i in range(nodes):
         dist[i][i] = 0
-        list = graph.getAdj(i)
-        for j in list:
+        list = graph.getAdj(graph.getNodes()[i].id) #linea di codice implementata
+        listId=[] #linea di codice implementata
+        for k in range(0,len(list)): #linea di codice implementata
+            for z in range(0,nodes): #linea di codice implementata
+             if list[k] == graph.getNodes()[z].id: #linea di codice implementata
+                 listId.append(z) #linea di codice implementata
+        for j in listId:
             dist[i][j] = 1
 
     # apply the relaxation step |V| times
