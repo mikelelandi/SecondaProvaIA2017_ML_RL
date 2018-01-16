@@ -32,10 +32,13 @@ def Nodes_Mean(graph):
     """
 
     # inizializiamo una lista ListIdNode composta dagli ID dei nodi del grafo, e un valore di contantore associato pari a 0
+    # e un valore di indice all'interno della matrice
     # tempo teorico di esecuzione O(N)
     listIdNode = []
+    countId=0
     for Node in graph.getNodes():
-        listIdNode.append([Node.id,0])
+        listIdNode.append([Node.id,0,countId])
+        countId=countId+1
 
 
     # inizializiamo una lista ListTemp composta dagli ID della sequenza dei nodi medi di tutte le coppie di nodi possibili
@@ -57,14 +60,25 @@ def Nodes_Mean(graph):
             # il calcolo del nodo medio non viene eseguito se non esiste un arco tra la coppia di nodi in esame
             # e se nel percorso minimo della coppia di nodi sono presenti un numero di nodi pari
             if i != j and distances[i][j] != float('inf') and distances[i][j] % 2 == 0:
-                for m in graph.dfs(i):
+                # si procede in una visita in profondità per tutti i nodi ottenendo ID dei nodi del percorso
+                listDfs=graph.dfs(listIdNode[i][0])
+                count=0
+                # si procede alla realizzazione di una lista ausiliaria della visita in profondità per tutti i nodi ottenendo la posizione
+                # all'interno della matrice dei nodi del percorso
+                listDfs2=[]
+                while count<len(listIdNode):
+                    if listIdNode[count][0] in listDfs:
+                        listDfs2.append(listIdNode[count][2])
+                    count=count+1
+                # ciclo for per elaborare la posizione all'interno della matrice del nodo medio
+                for m in listDfs2:
                     if distances[i][m] == distances[m][j] and \
                        distances[i][m] != float('inf') and \
                        distances[m][j] != float('inf') and \
                        distances[i][m] != 0 and \
                        distances[m][j] != 0:
                         #individuato se esiste il nodo medio m aggiorniamo la lista listTemp
-                        listTemp.append(m)
+                        listTemp.append(listIdNode[m][0])
                         break
 
 
@@ -104,7 +118,6 @@ def Nodes_Mean(graph):
 if __name__ == "__main__":
 
     graph = Graph_Test.generateGraph()
-    #graph = Graph_Test.getGraphFix2()
 
     D = FloydWarshall_ADJ(graph)
 
@@ -115,5 +128,6 @@ if __name__ == "__main__":
     for elm in D:
         print (elm)
 
-    print("---- Nodo/Nodi medi più frequente ----")
+
+    print("---- Nodo/Nodi medi più frequente [x,y] | x= ID nodo y= numero coppie di nodi per cui è medio ----")
     print(Nodes_Mean(graph))
